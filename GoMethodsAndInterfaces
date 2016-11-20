@@ -1,0 +1,82 @@
+Methods
+    Object is simply a value or variable that has methods, 
+    and a method is a function associated with a particular type.
+
+    declarations
+        package geometry
+
+        import "math"
+
+        type Point struct{ X, Y float64 }
+
+        // package-level function
+        func Distance(p, q Point) float64 {
+            return math.Hypot(q.X-p.X, q.Y-p.Y)
+        }
+
+        // method of type Point
+        func (p Point) Distance(q Point) float64 {
+            return math.Hypot(q.X-p.X, q.Y-p.Y)
+        }
+    
+        p is called the method's receiver; 
+        A common choice is the fisrt letter of the type name, like p for Point.
+
+    usage
+        p := Point{1, 2}
+        q := Point{4, 6}
+        fmt.Println(Distance(p, q)) // "5", function call
+        fmt.Println(p.Distance(q))  // "5", method call
+
+    With a pointer receiver
+        func (p *Point) ScaleBy(factor float64) {
+            p.X *= factor
+            p.Y *= factor
+        }
+
+    composition
+        declarations
+            import "image/color"
+
+            type ColoredPoint struct {
+                Point
+                Color color.RGBA
+            }
+
+        usage
+            red := color.RGBA{255, 0, 0, 255}
+            blue := color.RGBA{0, 0, 255, 255}
+            var p = ColoredPoint{Point{1, 1}, red}
+            var q = ColoredPoint{Point{5, 4}, blue}
+            fmt.Println(p.Distance(q.Point)) // "5"
+            p.ScaleBy(2)
+            q.ScaleBy(2)
+            fmt.Println(p.Distance(q.Point)) // "10"
+
+    encapsulation
+        type Point struct{ x, y float64 }
+
+Interfaces
+    An interface is an abstract type, it reveals only some of their methods.
+    It specifies a set of methods that a concrete type must possess to be considered an instance of that interface.
+
+    declarations
+        package io
+
+        type Writer interface {
+            Writer(p []byte) (n int, err error)
+        }
+
+        type Reader interface {
+            Read(p []byte) (n int, err error)
+        }
+
+        type Closer interface {
+            Close() error
+        }
+    
+    interface satisfaction
+
+    interface value
+
+    type assertions

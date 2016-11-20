@@ -1,0 +1,64 @@
+Variables
+    A variable is a piece of storage containing a value.
+
+    var a int
+    a = 3
+
+    var a = 3
+
+    a := 3
+
+    Pointers
+        A pointer value is the address of a variable.
+
+        x := 1
+        p := &x
+        fmt.Println(*p) // "1"
+        *p = 2
+        fmt.Println(*p) // "2"
+
+Types
+    basic data types
+        int8 int16 int32(rune) int64
+        uint8 uint16 unit32 unit64
+        float32 float64
+        complex64 complex128
+            var x complex128 = complex(1, 2)
+        bool
+        string
+            s := "hello, world"
+            fmt.Println(len(s))
+            fmt.Println(s[0], s[7])  // "104, 119" ('h' and 'w')
+            fmt.Println(s[0:5] // "hello"
+    composite types
+        array
+            var a [3] int
+            fmt.Println(a[0])
+        slices
+            var x []int
+            x = append(x, 1)
+            x = append(x, 2, 3)
+            fmt.Println(x) // "[1, 2, 3]"
+        maps
+            var ages map[string]int
+            fmt.Println(ages == nil) // "true"
+            ages = make(map[string]int)
+            ages["bowen"] = 24
+        struct
+            type Point struct{ X, Y int }
+            p := Point{1, 2}
+
+            embedding and anonymous fields
+                type Circle struct {
+                    Center Point
+                    Radius int
+                }
+
+                type Circle struct {
+                    Point
+                    Radius int
+                }
+    function type
+        func name(parameter-list) (result-list) {
+            body
+        }
