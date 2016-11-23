@@ -1,0 +1,64 @@
+Two stlyes of concurrent programming
+    CSP(communicating sequential process), a model of concurrency in which values are passed between independent activities(goroutines) but variables are for the most part confined to a single activity.
+    Mutual Exclusion, a approach is to allow many goroutines to access the variable, but only one at a time.
+Goroutines
+    Each concurrently executing activity is called a goroutine.
+        now can assume a goroutine is similar to a thread.
+        main goroutine
+        created by the go statement
+    
+    f() // call f(); wait for is to return
+    go f() // create a new goroutine that calls f(); don't wait
+
+    distinguish threads
+        stack
+            It's a work area where is saves the local variables of function calls that are in progress or temporarily suspended while another function is called.
+        growable stacks
+            OS thread has a fixed-size block of memory(often as large as 2MB) for its stack.
+            A goroutine starts life with a small stack, typically 2KB. Its not fixed, it grows and shrinks as needed.
+        goroutine scheduling
+            OS threads are scheduled by the OS kernel. Every few milliseconds, a hardware timer interrupts the processor, which causes a kernel function called the scheduler to be invoked.
+                a full context switch
+            The Go runtime contains its own scheduler that known as m:n scheduling (it multiplexes m goroutines on n OS threads, is analogous to the kernel scheduler).
+                the Go scheduler is not invoked periodically by a hardware timer, but implicitly by certain Go language constructs.
+                GOMAXPROCS is the n in m:n scheduling. It's default value is the number of CPUs on the machine. 
+Channels
+    A channel is a communication mechanism that lets one goroutine send values to another goroutine.
+    Each channel is a conduit for values of a particular type, called the channel's element type.
+    The type of a channle whose elements have type int is written chan int.
+
+    create a channel
+        ch := make(chan int) // ch has type 'chan int', unbuffered channel
+        ch := make(chan int, 3) // ch has type 'chan int' , buffered channel with capacity 3
+
+    operations
+        send and receive
+        
+            ch <- x  // a send statement
+            x = <-ch // a receive expression in an assignment statement
+            <-ch
+
+        close
+
+            close(ch)
+
+    A send operation on an unbuffered channel blocks the sending goroutine until another goroutine executes a corresponding receive on the same channel, at which point the value is transmitted and both goroutines may continue.
+        communication causes synchronize
+
+    A buffered channel has a queue of elements, a send operation on a buffered channel inserts an element at the back of the queue, and a receive operation removes an element from the front.
+        full will blocks
+    
+    multiplexing with select
+
+        select {
+        case <-ch1:
+            // ...
+        case x := <-ch2:
+            // ...
+        case ch3 <- y:
+            // ...
+        default:
+            // ...
+        }
+    
+    cancellation

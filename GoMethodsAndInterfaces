@@ -76,7 +76,38 @@ Interfaces
         }
     
     interface satisfaction
+        A type statisfies an interface if it possesses all the methods the interface requires.
+
+        var w io.Writer
+        w = os.Stdout              // ok
+        w = new(bytes.Buffer)      // ok
+        w = time.Second            // compile error
+
+        var any interface{}
+        any = true
+        any = 12.24
+        any = "hello"
+        any = new(bytes.Buffer)
+        any = time.Second
 
     interface value
+        A value of an interface type has two components, a concrete type and a value of that type.
+        var w io.Writer
+        w = os.Stdout
+        w = new(bytes.Buffer)
+        w = nil
 
     type assertions
+        A type assertion is an operation applied to an interface value.
+        
+        x.(T)
+    
+    type switchs
+    
+        switch x.(type) {
+        case nil:
+        case int, unint:
+        case bool:
+        case string:
+        default:
+        }
